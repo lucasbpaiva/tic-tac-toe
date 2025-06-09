@@ -11,9 +11,20 @@ function Gameboard() {
     for (let i = 0; i < ROWS; i++) {
         BOARD[i] = [];
         for (let j = 0; j < COLUMNS; j++) {
-            BOARD[i][j] = [""];
+            BOARD[i][j] = "";
         }
     }
+
+    // const lines = {
+    //     row1: BOARD[0],
+    //     row2: BOARD[1],
+    //     row3: BOARD[2],
+    //     col1: BOARD.map(row => row[0]),
+    //     col2: BOARD.map(row => row[1]),
+    //     col3: BOARD.map(row => row[2]),
+    //     diag: BOARD.map((row, i) => row[i]),
+    //     antidiag: BOARD.map((row, i) => row.at(-i-1))
+    // }
 
     // This will be the method of getting the entire board that our
     // UI will eventually need to render it.
@@ -21,18 +32,18 @@ function Gameboard() {
 
     const placeToken = (row, column, token) => {
         // prevent placing token on already filled square
-        if (BOARD[row][column] != "") return "fail";
+        if (BOARD[row][column] != "") return;
 
         BOARD[row][column] = token;
-        return "success";
     };
 
     // This method will be used to print our board to the console.
     // It is helpful to see what the board looks like after each turn as we play,
     // but we won't need it after we build our UI
     const printBoard = () => {
-        boardWithValues = BOARD.map(row => row.map(array => array[0]));
-        console.table(boardWithValues);
+        // boardWithValues = BOARD.map(row => row.map(array => array[0]));
+        // console.table(boardWithValues);
+        console.table(BOARD);
     };
 
     return {getBoard, placeToken, printBoard};
@@ -44,6 +55,7 @@ function Gameboard() {
 
 function GameController(playerOneName = "Player One", playerTwoName = "Player Two") {
     const board = Gameboard();
+    const BOARD = board.getBoard();
 
     const players = [
         {
@@ -72,14 +84,39 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
     const playRound = (row, column) => {
         //place token of current player
         console.log(`Placing ${getActivePlayer().name}'s token on the board...`);
-        let play = board.placeToken(row, column, getActivePlayer().token);
+        board.placeToken(row, column, getActivePlayer().token);
+        let gameOver = false;
+
+        const lines = [
+            BOARD[0], //row1
+            BOARD[1], //row2
+            BOARD[2], //row3
+            BOARD.map(row => row[0]), //col1
+            BOARD.map(row => row[1]), //col2
+            BOARD.map(row => row[2]), //col3
+            BOARD.map((row, i) => row[i]), //diagonal
+            BOARD.map((row, i) => row.at(-i-1)) //anti diagonal
+        ]
 
         // This is where we would check for a winner and handle that logic,
         // such as a win message.
 
+        //One of the players wins
+        lines.forEach(line => {
+            if (line.every(token => token == getActivePlayer().token)) {
+                console.log(`${getActivePlayer().name} wins!`);
+                board.printBoard();
+                gameOver = true;
+            }
+        });
+
+        //Tie
+
         //Switch player turn
-        if (play == "success") switchPlayerTurn();
-        printNewRound();
+        if (!gameOver) {
+            switchPlayerTurn();
+            printNewRound();
+        }
     };
 
     //Initial play game message
