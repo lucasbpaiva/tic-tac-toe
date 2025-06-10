@@ -15,17 +15,6 @@ function Gameboard() {
         }
     }
 
-    // const lines = {
-    //     row1: BOARD[0],
-    //     row2: BOARD[1],
-    //     row3: BOARD[2],
-    //     col1: BOARD.map(row => row[0]),
-    //     col2: BOARD.map(row => row[1]),
-    //     col3: BOARD.map(row => row[2]),
-    //     diag: BOARD.map((row, i) => row[i]),
-    //     antidiag: BOARD.map((row, i) => row.at(-i-1))
-    // }
-
     // This will be the method of getting the entire board that our
     // UI will eventually need to render it.
     const getBoard = () => BOARD;
@@ -41,8 +30,6 @@ function Gameboard() {
     // It is helpful to see what the board looks like after each turn as we play,
     // but we won't need it after we build our UI
     const printBoard = () => {
-        // boardWithValues = BOARD.map(row => row.map(array => array[0]));
-        // console.table(boardWithValues);
         console.table(BOARD);
     };
 
@@ -98,9 +85,6 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
             BOARD.map((row, i) => row.at(-i-1)) //anti diagonal
         ]
 
-        // This is where we would check for a winner and handle that logic,
-        // such as a win message.
-
         //One of the players wins
         lines.forEach(line => {
             if (line.every(token => token == getActivePlayer().token)) {
@@ -137,7 +121,26 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
     //Initial play game message
     printNewRound();
 
-    return {getActivePlayer, playRound};
+    return {getActivePlayer, playRound, getBoard: board.getBoard};
 }
 
-const game = GameController();
+// const game = GameController();
+
+function ScreenController() {
+    const game = GameController();
+    const cells = document.querySelectorAll(".cell");
+
+
+
+    //add event listener for the cells
+    cells.forEach(cell => {
+        cell.addEventListener("click", (event) => {
+            if (cell.textContent == "") {
+                cell.textContent = game.getActivePlayer().token;
+                game.playRound(event.target.dataset.row, event.target.dataset.column);
+            }
+        });
+    });
+}
+
+ScreenController();
