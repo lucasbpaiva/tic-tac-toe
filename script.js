@@ -111,6 +111,21 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         });
 
         //Tie
+        if (!gameOver) {
+            let filledRows = [];
+
+            BOARD.forEach(row => {
+                let numOfEmptyStrings = row.filter(token => token == "").length;
+                let filled = numOfEmptyStrings == 0;
+                filledRows.push(filled);
+            });
+
+            if (filledRows.every(item => item == true)) {
+                console.log("It's a tie!");
+                board.printBoard();
+                gameOver = true;
+            }
+        }
 
         //Switch player turn
         if (!gameOver) {
