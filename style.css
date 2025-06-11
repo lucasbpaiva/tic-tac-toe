@@ -1,8 +1,10 @@
 .container {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 20px;
 }
 
 .board {
@@ -21,4 +23,9 @@
     align-items: center;
     font-size: 2rem;
     cursor: pointer;
+}
+
+.restart-button {
+    width: 150px;
+    padding: 5px 10px;
 }
