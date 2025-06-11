@@ -43,6 +43,7 @@ function Gameboard() {
 function GameController(playerOneName = "Player One", playerTwoName = "Player Two") {
     const board = Gameboard();
     const BOARD = board.getBoard();
+    let gameOver = false;
 
     const players = [
         {
@@ -72,7 +73,6 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         //place token of current player
         console.log(`Placing ${getActivePlayer().name}'s token on the board...`);
         board.placeToken(row, column, getActivePlayer().token);
-        let gameOver = false;
 
         const lines = [
             BOARD[0], //row1
@@ -118,13 +118,13 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         }
     };
 
+    const gameFinished = () => gameOver;
+
     //Initial play game message
     printNewRound();
 
-    return {getActivePlayer, playRound, getBoard: board.getBoard};
+    return {getActivePlayer, playRound, getBoard: board.getBoard, gameFinished};
 }
-
-// const game = GameController();
 
 function ScreenController() {
     const game = GameController();
@@ -135,7 +135,7 @@ function ScreenController() {
     //add event listener for the cells
     cells.forEach(cell => {
         cell.addEventListener("click", (event) => {
-            if (cell.textContent == "") {
+            if (cell.textContent == "" && !game.gameFinished()) {
                 cell.textContent = game.getActivePlayer().token;
                 game.playRound(event.target.dataset.row, event.target.dataset.column);
             }
