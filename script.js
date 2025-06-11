@@ -1,5 +1,4 @@
 // The Gameboard represents the state of the board
-// Each square holds a Cell (defined later)
 // and we expose a placeToken method to be able to add tokens
 
 function Gameboard() {
@@ -15,8 +14,6 @@ function Gameboard() {
         }
     }
 
-    // This will be the method of getting the entire board that our
-    // UI will eventually need to render it.
     const getBoard = () => BOARD;
 
     const placeToken = (row, column, token) => {
@@ -26,9 +23,6 @@ function Gameboard() {
         BOARD[row][column] = token;
     };
 
-    // This method will be used to print our board to the console.
-    // It is helpful to see what the board looks like after each turn as we play,
-    // but we won't need it after we build our UI
     const printBoard = () => {
         console.table(BOARD);
     };
@@ -70,7 +64,6 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
     };
 
     const playRound = (row, column) => {
-        //place token of current player
         console.log(`Placing ${getActivePlayer().name}'s token on the board...`);
         board.placeToken(row, column, getActivePlayer().token);
 
@@ -111,7 +104,6 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
             }
         }
 
-        //Switch player turn
         if (!gameOver) {
             switchPlayerTurn();
             printNewRound();
@@ -127,17 +119,15 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
 }
 
 function ScreenController() {
-    const game = GameController();
+    let game = GameController();
     const cells = document.querySelectorAll(".cell");
     const restartButton = document.querySelector(".restart-button");
 
     restartButton.addEventListener("click", () => {
         cells.forEach(cell => cell.textContent = "");
-        const board = game.getBoard();
-        //change all values of board to ""
+        game = GameController();
     });
 
-    //add event listener for the cells
     cells.forEach(cell => {
         cell.addEventListener("click", (event) => {
             if (cell.textContent == "" && !game.gameFinished()) {
