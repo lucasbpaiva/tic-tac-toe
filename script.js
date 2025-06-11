@@ -23,11 +23,7 @@ function Gameboard() {
         BOARD[row][column] = token;
     };
 
-    const printBoard = () => {
-        console.table(BOARD);
-    };
-
-    return {getBoard, placeToken, printBoard};
+    return {getBoard, placeToken};
 }
 
 // The GameController will be responsible for controlling the 
@@ -38,6 +34,7 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
     const board = Gameboard();
     const BOARD = board.getBoard();
     let gameOver = false;
+    const message = document.querySelector(".message");
 
     const players = [
         {
@@ -58,13 +55,7 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
 
     const getActivePlayer = () => activePlayer;
 
-    const printNewRound = () => {
-        board.printBoard();
-        console.log(`${getActivePlayer().name}'s turn.`);
-    };
-
     const playRound = (row, column) => {
-        console.log(`Placing ${getActivePlayer().name}'s token on the board...`);
         board.placeToken(row, column, getActivePlayer().token);
 
         const lines = [
@@ -81,8 +72,7 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
         //One of the players wins
         lines.forEach(line => {
             if (line.every(token => token == getActivePlayer().token)) {
-                console.log(`${getActivePlayer().name} wins!`);
-                board.printBoard();
+                message.textContent = `${getActivePlayer().name} wins!`;
                 gameOver = true;
             }
         });
@@ -98,33 +88,34 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
             });
 
             if (filledRows.every(item => item == true)) {
-                console.log("It's a tie!");
-                board.printBoard();
+                message.textContent = "It's a tie!";
                 gameOver = true;
             }
         }
 
         if (!gameOver) {
             switchPlayerTurn();
-            printNewRound();
+            message.textContent = `${getActivePlayer().name}'s turn.`;
         }
     };
 
     const gameFinished = () => gameOver;
 
     //Initial play game message
-    printNewRound();
+    message.textContent = `${getActivePlayer().name}'s turn.`
 
     return {getActivePlayer, playRound, getBoard: board.getBoard, gameFinished};
 }
 
 function ScreenController() {
     let game = GameController();
+    const message = document.querySelector(".message");
     const cells = document.querySelectorAll(".cell");
     const restartButton = document.querySelector(".restart-button");
 
     restartButton.addEventListener("click", () => {
         cells.forEach(cell => cell.textContent = "");
+        message.textContent = "";
         game = GameController();
     });
 
