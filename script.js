@@ -15,6 +15,7 @@ function Gameboard() {
         }
     }
 
+
     // This will be the method of getting the entire board that our
     // UI will eventually need to render it.
     const getBoard = () => BOARD;
@@ -129,8 +130,13 @@ function GameController(playerOneName = "Player One", playerTwoName = "Player Tw
 function ScreenController() {
     const game = GameController();
     const cells = document.querySelectorAll(".cell");
+    const restartButton = document.querySelector(".restart-button");
 
-
+    restartButton.addEventListener("click", () => {
+        cells.forEach(cell => cell.textContent = "");
+        const board = game.getBoard();
+        //change all values of board to ""
+    });
 
     //add event listener for the cells
     cells.forEach(cell => {
