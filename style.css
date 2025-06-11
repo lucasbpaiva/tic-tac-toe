@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
 * {
     box-sizing: border-box;
 }
 
 body {
     background-color: #a2a8d3;
+    font-family: "Varela Round", sans-serif;
 }
 
 .container {
@@ -16,7 +19,6 @@ body {
 }
 
 .title {
-    font-family: sans-serif;
     color: #e7eaf6;
     font-size: 3em;
     margin: 0 auto;
@@ -45,7 +47,6 @@ body {
     font-size: 2rem;
     cursor: pointer;
     font-size: 3em;
-    font-family: sans-serif;
 }
 
 .cell:hover {
