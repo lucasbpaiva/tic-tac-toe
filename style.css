@@ -1,3 +1,11 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #a2a8d3;
+}
+
 .container {
     height: 100vh;
     display: flex;
@@ -7,25 +15,49 @@
     gap: 20px;
 }
 
+.title {
+    font-family: sans-serif;
+    color: #e7eaf6;
+    font-size: 3em;
+    margin: 0 auto;
+}
+
+.message {
+    font-size: 2em;
+    color: #e7eaf6;
+}
+
 .board {
     width: 500px;
     height: 500px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    background-color: cadetblue;
 }
 
 .cell {
-    border: 2px solid gray;
+    border: 2px solid #e7eaf6;
+    background-color: #113f67;
+    color: #e7eaf6;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 2rem;
     cursor: pointer;
+    font-size: 3em;
+    font-family: sans-serif;
+}
+
+.cell:hover {
+    background-color: #38598b;
 }
 
 .restart-button {
-    width: 150px;
+    cursor: pointer;
+    color: #e7eaf6;
+    background-color: #113f67;
+    width: 200px;
+    border-radius: 10px;
     padding: 5px 10px;
+    font-size: 2em;
 }
